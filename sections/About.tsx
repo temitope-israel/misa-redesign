@@ -12,13 +12,14 @@ import {
 import Counter from "@/components/Counter";
 
 const STATS = [
-  { value: 12, suffix: "+", label: "Years Experience" },
-  { value: 30, suffix: "+", label: "Projects Completed" },
+  { value: 15, suffix: "+", label: "Years Experience" },
+  { value: 130, suffix: "+", label: "Projects Completed" },
   { value: 500, suffix: "+", label: "Satisfied Clients" },
   { value: 100, suffix: "%", label: "Quality Rating" },
 ];
 
 const HIGHLIGHTS = [
+    
   "End-to-end property development & construction",
   "Full facility management & asset care",
   "Conveyancing, advisory & regulatory approvals",
