@@ -277,9 +277,9 @@ export default function Navbar() {
             </button>
 
             <nav className="flex flex-col gap-4">
-              <span className="text-[10px] font-mono tracking-widest text-slate-400 uppercase mb-2">
+              {/* <span className="text-[10px] font-mono tracking-widest text-slate-400 uppercase mb-2">
                 // Navigation Index
-              </span>
+              </span> */}
               {LINKS.map((link, i) => {
                 const isActive = activeSection === link.href;
                 return (
