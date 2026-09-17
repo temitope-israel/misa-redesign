@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import { HiOutlineSparkles, HiArrowUpRight } from "react-icons/hi2";
+import { HiOutlineSparkles, HiArrowUpRight, HiXMark } from "react-icons/hi2";
 
 // Navigation items definition
 interface NavItem {
@@ -25,8 +25,8 @@ const LINKS: NavItem[] = [
 // 1. Geometric Luxury Architectural Logo
 function Logo() {
   return (
-    <a
-      href="#home"
+
+      <a href="#home"
       className="group relative flex items-center gap-3 focus:outline-none"
     >
       {/* Geometric Icon Emblem */}
@@ -50,7 +50,6 @@ function Logo() {
       <div className="flex flex-col">
         <span className="text-xl font-extrabold tracking-[0.45em] text-brand-600 transition-colors group-hover:text-brand-600">
           MISA
-          {/* <span className="font-light text-brand-600">MISA</span> */}
         </span>
         <span className="text-[8px] font-bold tracking-[1.05em] text-slate-900 uppercase">
           LIMITED
@@ -79,12 +78,11 @@ function NavLink({
   const isHovered = hoveredNav === href;
 
   return (
-    <a
-      href={href}
+
+     <a href={href}
       onMouseEnter={() => setHoveredNav(href)}
       className="relative px-4 py-2 text-sm font-medium transition-colors focus:outline-none"
     >
-      {/* Dynamic Magnetic Hover Pill Capsule */}
       {isHovered && (
         <motion.span
           layoutId="hoverCapsule"
@@ -96,7 +94,6 @@ function NavLink({
         />
       )}
 
-      {/* Text Label with subtle lift animation */}
       <motion.span
         animate={{ y: isHovered ? -1 : 0 }}
         transition={{ duration: 0.15 }}
@@ -111,7 +108,6 @@ function NavLink({
         {label}
       </motion.span>
 
-      {/* Active Section Underline Dot Indicator */}
       {isActive && (
         <motion.span
           layoutId="activeDot"
@@ -133,7 +129,6 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState<string>("#home");
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
 
-  // Handle scroll detection
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     handleScroll();
@@ -141,7 +136,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Section observer for scroll spy
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -162,7 +156,6 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  // Lock scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -170,7 +163,6 @@ export default function Navbar() {
     };
   }, [open]);
 
-  // Typed Animation Variants
   const menuSheetVariants: Variants = {
     closed: {
       opacity: 0,
@@ -202,13 +194,12 @@ export default function Navbar() {
       >
         {/* Floating Glass Shell */}
         <div
-          className={`relative flex items-center justify-between rounded-2xl px-5 py-3 transition-all duration-500 ${
+          className={`relative z-50 flex items-center justify-between rounded-2xl px-5 py-3 transition-all duration-500 ${
             scrolled
               ? "bg-white/85 backdrop-blur-xl border border-slate-200/80 shadow-lg shadow-slate-900/5"
               : "bg-white/50 backdrop-blur-md border border-white/60 shadow-sm"
           }`}
         >
-          {/* Logo */}
           <Logo />
 
           {/* Desktop Navigation */}
@@ -239,17 +230,15 @@ export default function Navbar() {
               <HiOutlineSparkles className="h-4 w-4 text-white/90" />
               <span>Get in Touch</span>
               <HiArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-
-              {/* Shimmer Effect */}
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             </motion.a>
           </div>
 
-          {/* Custom Mobile Menu Button */}
+          {/* Mobile Menu Toggle — stays on top of the drawer at all times */}
           <button
             onClick={() => setOpen((v) => !v)}
-            className="relative z-50 md:hidden flex flex-col items-center justify-center gap-1.5 h-10 w-10 rounded-xl bg-slate-100 text-slate-900 hover:bg-slate-200 focus:outline-none transition-colors"
-            aria-label="Toggle Menu"
+            className="relative z-[60] md:hidden flex flex-col items-center justify-center gap-1.5 h-10 w-10 rounded-xl bg-slate-100 text-slate-900 hover:bg-slate-200 focus:outline-none transition-colors"
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
           >
             <motion.span
@@ -278,8 +267,17 @@ export default function Navbar() {
             exit="closed"
             className="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-2xl md:hidden px-8 pt-32 pb-12 flex flex-col justify-between pointer-events-auto"
           >
+            {/* Explicit close button, top-right, always visible regardless of scroll state */}
+            <button
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              className="absolute top-6 right-6 z-[60] flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 transition-colors"
+            >
+              <HiXMark className="h-5 w-5" />
+            </button>
+
             <nav className="flex flex-col gap-4">
-              <span className="text-[10px] font-mono tracking-widest text-slate-500 uppercase mb-2">
+              <span className="text-[10px] font-mono tracking-widest text-slate-400 uppercase mb-2">
                 // Navigation Index
               </span>
               {LINKS.map((link, i) => {
@@ -297,8 +295,8 @@ export default function Navbar() {
                       <span
                         className={`text-xs font-mono transition-colors ${
                           isActive
-                            ? "text-brand-600"
-                            : "text-black group-hover:text-brand-600"
+                            ? "text-brand-400"
+                            : "text-slate-500 group-hover:text-brand-400"
                         }`}
                       >
                         0{i + 1}
@@ -306,8 +304,8 @@ export default function Navbar() {
                       <span
                         className={`text-2xl font-semibold tracking-tight transition-colors ${
                           isActive
-                            ? "text-brand-600 font-bold"
-                            : "text-black group-hover:text-white"
+                            ? "text-brand-400"
+                            : "text-white group-hover:text-brand-300"
                         }`}
                       >
                         {link.label}
@@ -316,8 +314,8 @@ export default function Navbar() {
                     <HiArrowUpRight
                       className={`h-5 w-5 transition-transform ${
                         isActive
-                          ? "text-brand-600 translate-x-0 translate-y-0"
-                          : "text-slate-600 opacity-0 group-hover:opacity-100 group-hover:text-brand-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          ? "text-brand-400 translate-x-0 translate-y-0"
+                          : "text-slate-600 opacity-0 group-hover:opacity-100 group-hover:text-brand-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       }`}
                     />
                   </motion.a>
@@ -330,8 +328,8 @@ export default function Navbar() {
               variants={navItemVariants}
               className="flex flex-col gap-4"
             >
-              <a
-                href="#contact"
+
+               <a href="#contact"
                 onClick={() => setOpen(false)}
                 className="flex items-center justify-center gap-2 rounded-xl bg-brand-600 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-brand-600/30 hover:bg-brand-700 active:scale-[0.98] transition-all"
               >
@@ -339,7 +337,7 @@ export default function Navbar() {
                 <HiArrowUpRight className="h-4 w-4" />
               </a>
               <p className="text-center text-[11px] text-slate-500 tracking-wide">
-                © {new Date().getFullYear()} APEX Homes Group
+                © {new Date().getFullYear()} MISA Limited
               </p>
             </motion.div>
           </motion.div>
